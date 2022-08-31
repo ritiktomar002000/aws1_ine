@@ -1,0 +1,6 @@
+requests
+flask-lambda-python36
+flask
+Werkzeug==2.0.3
+pandas
+boto3

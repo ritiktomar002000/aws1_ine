@@ -1,0 +1,24 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "customer-api"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-5ik4qsk82lhy"
+s3_prefix = "customer-api"
+region = "ap-south-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []
+
+[y]
+[y.deploy]
+[y.deploy.parameters]
+stack_name = "customer-api"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-5ik4qsk82lhy"
+s3_prefix = "customer-api"
+region = "ap-south-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []

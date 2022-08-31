@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  customer-api
+
+  Sample SAM Template for customer-api
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  CustomerTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: customerstable
+      AttributeDefinitions:
+        - AttributeName: customer_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: customer_id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  CustomerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: customer/
+      Handler: app.app
+      Runtime: python3.9
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName:
+              !Ref CustomerTable
+      Events:
+        Test:
+          Type: Api
+          Properties:
+            Path: /
+            Method: get
+        Home:
+          Type: Api
+          Properties:
+            Path: /home
+            Method: get
+        Search:
+          Type: Api
+          Properties:
+            Path: /search
+            Method: post
+
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  CustomerApi:
+    Description: "API Gateway endpoint URL for Prod stage for Customer function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  CustomerFunction:
+    Description: "Customer Lambda Function ARN"
+    Value: !GetAtt CustomerFunction.Arn
+  CustomerFunctionIamRole:
+    Description: "Implicit IAM Role created for Customer function"
+    Value: !GetAtt CustomerFunctionRole.Arn
